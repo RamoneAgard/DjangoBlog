@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+Home
+{% endblock %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+    {{user}}
+    <div class='row row-cols-1'>
+    {% for b in blog_list %}
+      {% include 'blog/list-inline.html' with blog_post=b truncate=True detail=False%}
+    {% endfor %}
+    </div>
+{% endblock %}
