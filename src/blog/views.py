@@ -5,6 +5,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 from .models import BlogPost
 from .forms import BlogPostModelForm
+from comments.models import BlogComment
+from comments.forms import BlogCommentModelForm
 
 def blog_post_detail_page(request, slug):
     # obj = BlogPost.objects.get(id=post_id)
@@ -37,12 +39,38 @@ CRUD -- Create, Retrieve, Update, Delete
 
 def blog_post_list_view(request):
     # list out objects, could be search
-    querySet = BlogPost.objects.all().published()  # or objects.published() --> list of objects
+    querySet = BlogPost.objects.all().published()
+    # or objects.published() --> list of objects
+    context = {}
     if request.user.is_authenticated:
         my_qs = BlogPost.objects.filter(user=request.user)
         querySet = (querySet | my_qs).distinct()
+        # comment_content = ""
+        # comment_post = None
+        # print("before if")
+        if request.method == 'POST':
+            form = BlogCommentModelForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment_post_slug = request.POST.get('blog_slug')
+                comment_post = querySet.filter(slug=comment_post_slug).first()
+                comment.blog_post = comment_post
+                comment.user = request.user
+                comment.save()
+        else:
+            form = BlogCommentModelForm()
+        context["comment_form"] = form
+            #BlogComment.objects.create(user=comment_user, blog_post=comment_post, content=comment_content)
+            # print("saved it")
+    PostCommentList = []
+    for bp in querySet:
+        coms = bp.comments.all()
+        if coms.count() > 5:
+            coms = coms[:5]
+        b_c_set = (bp, coms)
+        PostCommentList.append(b_c_set)
     template_name = 'blog/list.html'
-    context = {"object_list": querySet}
+    context["object_list"] =  PostCommentList
     return render(request, template_name, context)
 
 @login_required # need to be logged in

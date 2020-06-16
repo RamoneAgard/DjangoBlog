@@ -10,8 +10,10 @@
    <!-- sub title <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
    <p class="card-text">
       <small class="text-muted">
+        {{ blog_post.user }} | 
         {% if blog_post.publish_date %} {{ blog_post.publish_date }}
-        {% else %} Draft {% endif %}</small>
+        {% else %} Draft {% endif %}
+      </small>
      {% if truncate %}
       {{ blog_post.content|linebreaks|truncatewords:50 }}
      {% else %}
@@ -22,6 +24,31 @@
     <a href= {{ blog_post.get_absolute_url }} class="btn btn-outline-primary">View</a>
     <!-- <a href="#" class="card-link">Another link</a> -->
    {% endif %}
-  </div>
+   </div>
+   <div class="card-footer" style="max-height:550px">
+     <div class="col" style="overflow-y:scroll; max-height:300px"">
+    {% for com in comments %}
+      <div class="card mb-3">
+        <div class="card-header">
+          {{ com.user }}
+        </div>
+        <div class="card-body">
+          <p class="card-text"> {{ com.content }}</p>
+          <small class="text-muted"> {{ com.timestamp }}</small>
+        </div>
+      </div>
+     {% endfor %}
+     </div>
+   {% if user.is_authenticated %}
+    <form class="form-inline mt-3 justify-content-around align-items-center" method="POST" action='.' enctype="multipart/form-data"> {% csrf_token %}
+      {{comm_form.content}}
+      <!--<textarea class="mr-auto" name="content" rows="2" cols="50" maxlength="300" placeholder="Comment on this Post.."></textarea>-->
+      <span class="hidden">
+        <input type="hidden" style="hidden" name="blog_slug" value={{ blog_post.slug }}>
+      </span>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Post</button>
+    </form>
+   {% endif %}
+   </div>
 </div>
 </div>

@@ -5,10 +5,11 @@
   {% include "blog/list-inline.html" with blog_post=object truncate=False detail=True%}
   {% if request.user.is_authenticated %}
     {% if request.user.is_staff %}
-      <div class='col-12 mx-auto'>
+      <div class='col-8 mx-auto d-flex justify-content-around'>
         <a href={{ object.get_edit_url }}>Edit</a>
         <a href={{ object.get_delete_url }}>Delete</a>
       </div>
+      <br>
     {% endif %}
   {% endif %}
   </div>

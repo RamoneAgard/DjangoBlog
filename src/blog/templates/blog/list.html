@@ -2,8 +2,8 @@
 
 {% block content %}
   <div class="row row-cols-1">
-  {% for obj in object_list %}
-    {% include 'blog/list-inline.html' with blog_post=obj truncate=True detail=False %}
+  {% for bp, coms in object_list %}
+    {% include 'blog/list-inline.html' with blog_post=bp comments=coms comm_form=comment_form truncate=True detail=False %}
   {% endfor %}
   </div>
 {% endblock %}
