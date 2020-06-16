@@ -1,2 +1,2 @@
 # DjangoBlog
-Simple Blog App made with Django
+Simple(CRUD) Blog App made with Django
