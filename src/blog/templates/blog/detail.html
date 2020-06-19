@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class='row'>
-  {% include "blog/list-inline.html" with blog_post=object truncate=False detail=True%}
+  {% include "blog/list-inline.html" with blog_post=object comments=object_comments comm_form=comment_form truncate=False detail=True%}
   {% if request.user.is_authenticated %}
     {% if request.user.is_staff %}
       <div class='col-8 mx-auto d-flex justify-content-around'>

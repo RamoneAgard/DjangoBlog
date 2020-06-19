@@ -1,5 +1,5 @@
-<div class= 'col-md-9 mb-3 mx-auto'>
-<div class="card {% if not blog_post.publish_date %} border-info text-info bg-light{% endif %}">
+<div class= 'col-md-9 mb-5 mx-auto'>
+<div class="card {% if not blog_post.publish_date %} border-info text-info bg-light{% endif %}" style="{% if blog_post.publish_date %} border-style:double; border-width:3px; background-color:#fdebd0;{% endif %}" >
   {% if blog_post.image %}
     <a href= {{ blog_post.get_absolute_url }}>
       <img src="{{ blog_post.image.url }}" class="card-img-top"/>
@@ -10,7 +10,7 @@
    <!-- sub title <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
    <p class="card-text">
       <small class="text-muted">
-        {{ blog_post.user }} | 
+        {{ blog_post.user }} |
         {% if blog_post.publish_date %} {{ blog_post.publish_date }}
         {% else %} Draft {% endif %}
       </small>
@@ -25,7 +25,7 @@
     <!-- <a href="#" class="card-link">Another link</a> -->
    {% endif %}
    </div>
-   <div class="card-footer" style="max-height:550px">
+   <div class="card-footer text-dark bg-light" style="max-height:550px">
      <div class="col" style="overflow-y:scroll; max-height:300px"">
     {% for com in comments %}
       <div class="card mb-3">
@@ -33,14 +33,14 @@
           {{ com.user }}
         </div>
         <div class="card-body">
-          <p class="card-text"> {{ com.content }}</p>
+          <p class="card-text"> {{ com.content|linebreaks }}</p>
           <small class="text-muted"> {{ com.timestamp }}</small>
         </div>
       </div>
      {% endfor %}
      </div>
    {% if user.is_authenticated %}
-    <form class="form-inline mt-3 justify-content-around align-items-center" method="POST" action='.' enctype="multipart/form-data"> {% csrf_token %}
+    <form class="form-inline mt-3 py-3 border rounded justify-content-around align-items-center bg-white" style="background-color:#fdebd0;" method="POST" action='.' enctype="multipart/form-data"> {% csrf_token %}
       {{comm_form.content}}
       <!--<textarea class="mr-auto" name="content" rows="2" cols="50" maxlength="300" placeholder="Comment on this Post.."></textarea>-->
       <span class="hidden">

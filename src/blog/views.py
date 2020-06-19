@@ -45,11 +45,9 @@ def blog_post_list_view(request):
     if request.user.is_authenticated:
         my_qs = BlogPost.objects.filter(user=request.user)
         querySet = (querySet | my_qs).distinct()
-        # comment_content = ""
-        # comment_post = None
-        # print("before if")
+        form = BlogCommentModelForm() # form for comments
         if request.method == 'POST':
-            form = BlogCommentModelForm(request.POST)
+            form = BlogCommentModelForm(request.POST or None)
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment_post_slug = request.POST.get('blog_slug')
@@ -57,11 +55,7 @@ def blog_post_list_view(request):
                 comment.blog_post = comment_post
                 comment.user = request.user
                 comment.save()
-        else:
-            form = BlogCommentModelForm()
         context["comment_form"] = form
-            #BlogComment.objects.create(user=comment_user, blog_post=comment_post, content=comment_content)
-            # print("saved it")
     PostCommentList = []
     for bp in querySet:
         coms = bp.comments.all()
