@@ -90,8 +90,25 @@ def blog_post_create_view(request):
 def blog_post_detail_view(request, slug):
     # 1 object is retrieved -> detail view
     obj = get_object_or_404(BlogPost, slug=slug)
+    context = {}
+    if request.user.is_authenticated:
+        comment_form = BlogCommentModelForm()
+        if request.method == 'POST':
+            comment_form = BlogPostModelForm(request.POST or None)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment_post_slug = request.POST.get('blog_slug')
+                comment_post = querySet.filter(slug=comment_post_slug).first()
+                comment.blog_post = comment_post
+                comment.user = request.user
+                comment.save()
+        context["comment_form"] = comment_form
+    coms = obj.comments.all()
+    if coms.count() > 5:
+        coms = coms[:5]
     template_name = 'blog/detail.html'
-    context = {"object": obj}
+    context["object"] = obj
+    context["object_comments"] = coms
     return render(request, template_name, context)
 
 def blog_post_update_view(request, slug):
