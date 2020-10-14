@@ -40,7 +40,7 @@ class BlogPost(models.Model): #user.blogpost_set.all()  or BlogPost.objects.filt
     user = models.ForeignKey(User, default=1, null = True, on_delete=models.SET_NULL)
     # deleting a user sets there posts to default user if set or null if set true.
     image = models.ImageField(upload_to='image/', blank=True, null=True)
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=120, unique=False)
     slug = models.SlugField(unique=True)
     content = models.TextField(null=True, blank=True)
     publish_date = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, blank=True)

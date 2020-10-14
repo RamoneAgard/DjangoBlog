@@ -13,14 +13,15 @@ class BlogPostModelForm(forms.ModelForm):
         model = BlogPost
         fields = ['title', 'image', 'content', 'publish_date']
 
-    def clean_title(self, *args, **kwargs):
-        title = self.cleaned_data['title']
-        instance = self.instance
-        querySet = BlogPost.objects.filter(title__iexact=title)
-        print(querySet)
-        if instance is not None:
-            print("hey")
-            querySet = querySet.exclude(pk=instance.pk)
-        if querySet.exists():
-            raise forms.ValidationError("This title already exists.")
-        return title
+    ''' if I want to clean a title (no dups)'''
+    # def clean_title(self, *args, **kwargs):
+    #     title = self.cleaned_data['title']
+    #     instance = self.instance
+    #     querySet = BlogPost.objects.filter(title__iexact=title)
+    #     print(querySet)
+    #     if instance is not None:
+    #         print("hey")
+    #         querySet = querySet.exclude(pk=instance.pk)
+    #     if querySet.exists():
+    #         raise forms.ValidationError("This title already exists.")
+    #     return title
