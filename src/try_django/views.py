@@ -13,14 +13,15 @@ def home_page(request):
         comment_form = BlogCommentModelForm()
         my_title = "Welcome Back to the Blog:"
         if request.method == 'POST':
-            comment_form = BlogPostModelForm(request.POST or None)
-            if form.is_valid():
-                comment = form.save(commit=False)
+            comment_form = BlogCommentModelForm(request.POST or None)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
                 comment_post_slug = request.POST.get('blog_slug')
                 comment_post = querySet.filter(slug=comment_post_slug).first()
                 comment.blog_post = comment_post
                 comment.user = request.user
                 comment.save()
+                comment_form = BlogCommentModelForm()
         context["comment_form"] = comment_form
     PostCommentList = []
     for bp in querySet:

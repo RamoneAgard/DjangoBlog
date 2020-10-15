@@ -94,14 +94,15 @@ def blog_post_detail_view(request, slug):
     if request.user.is_authenticated:
         comment_form = BlogCommentModelForm()
         if request.method == 'POST':
-            comment_form = BlogPostModelForm(request.POST or None)
-            if form.is_valid():
-                comment = form.save(commit=False)
+            comment_form = BlogCommentModelForm(request.POST or None)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
                 comment_post_slug = request.POST.get('blog_slug')
-                comment_post = querySet.filter(slug=comment_post_slug).first()
+                comment_post = obj
                 comment.blog_post = comment_post
                 comment.user = request.user
                 comment.save()
+                comment_form = BlogCommentModelForm()
         context["comment_form"] = comment_form
     coms = obj.comments.all()
     if coms.count() > 5:

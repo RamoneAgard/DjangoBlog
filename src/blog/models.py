@@ -49,6 +49,7 @@ class BlogPost(models.Model): #user.blogpost_set.all()  or BlogPost.objects.filt
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     objects = BlogPostManager()
 
+    # unique slug generator retrieved from online resource, user does not need to create their own slug
     def unique_slug_generator(self, new_slug=None):
         """
         This is for a Django project and it assumes your instance
@@ -69,6 +70,7 @@ class BlogPost(models.Model): #user.blogpost_set.all()  or BlogPost.objects.filt
             return self.unique_slug_generator(new_slug=new_slug)
         return slug
 
+    # overridden save to create an auto generated slug for the new post
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self.unique_slug_generator()
