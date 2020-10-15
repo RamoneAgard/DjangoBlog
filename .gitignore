@@ -1,0 +1,14 @@
+.DS_Store
+static_cdn_test/static/
+static_cdn_test/media/
+
+__pycache__/
+parse.py
+
+*.log
+local_settings.py
+db.sqlite3
+
+.mypy_cache/
+
+.vscode/
